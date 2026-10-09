@@ -36,7 +36,7 @@ export function saveSession(session: UserSession | null): void {
 }
 
 /**
- * Sign In handler supporting Supabase Auth with fallback to Local Demo Session
+ * Sign in with Supabase when configured. Local mode is guest-only.
  */
 export async function signInUser(email: string, password?: string): Promise<{ session: UserSession; error?: string }> {
   if (isSupabaseConfigured() && supabase && password) {
@@ -54,7 +54,7 @@ export async function signInUser(email: string, password?: string): Promise<{ se
         return { session };
       }
     } catch (err) {
-      console.warn('Supabase Auth error, using authenticated local session:', err);
+      return { session: getStoredSession() as UserSession, error: err instanceof Error ? err.message : 'Authentication failed.' };
     }
   }
 
@@ -63,7 +63,7 @@ export async function signInUser(email: string, password?: string): Promise<{ se
     id: `user-${Date.now()}`,
     email: email.trim(),
     displayName: email.split('@')[0] || 'User',
-    isGuest: false,
+    isGuest: true,
   };
   saveSession(session);
   return { session };
@@ -94,7 +94,7 @@ export async function signUpUser(email: string, password?: string, displayName?:
         return { session };
       }
     } catch (err) {
-      console.warn('Supabase Sign Up error, using local session:', err);
+      return { session: getStoredSession() as UserSession, error: err instanceof Error ? err.message : 'Account creation failed.' };
     }
   }
 
@@ -102,7 +102,7 @@ export async function signUpUser(email: string, password?: string, displayName?:
     id: `user-${Date.now()}`,
     email: email.trim(),
     displayName: displayName || email.split('@')[0] || 'User',
-    isGuest: false,
+    isGuest: true,
   };
   saveSession(session);
   return { session };
@@ -135,4 +135,3 @@ export async function signOutUser(): Promise<void> {
   }
   saveSession(null);
 }
-

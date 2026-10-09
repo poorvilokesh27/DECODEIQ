@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/layout/Sidebar';
 import { Header } from './components/layout/Header';
 import { AuthModal } from './components/auth/AuthModal';
@@ -59,6 +59,7 @@ export const App: React.FC = () => {
   const [reminders, setReminders] = useState<ReminderItem[]>([]);
   const [vaultItems, setVaultItems] = useState<VaultItem[]>([]);
   const [isVaultUnlocked, setIsVaultUnlocked] = useState<boolean>(false);
+  const [vaultPin, setVaultPinState] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Chat Context state
@@ -66,6 +67,12 @@ export const App: React.FC = () => {
   const [chatPoster, setChatPoster] = useState<PosterAnalysis | null>(null);
 
   const isCloud = isSupabaseConfigured();
+
+  const lockVault = useCallback(() => {
+    setIsVaultUnlocked(false);
+    setVaultPinState(null);
+    setVaultItems([]);
+  }, []);
 
   // Initialize data and apply theme
   useEffect(() => {
@@ -76,8 +83,33 @@ export const App: React.FC = () => {
       setActiveAnalysis(loadedAnalyses[0]);
     }
     setReminders(getSavedReminders());
-    setVaultItems(getSavedVaultItems());
   }, []);
+
+  useEffect(() => {
+    if (!isVaultUnlocked || !vaultPin) return;
+    let timeout = 0;
+    const resetTimer = () => {
+      window.clearTimeout(timeout);
+      timeout = window.setTimeout(lockVault, Math.max(1, preferences.autoLockVaultMinutes) * 60_000);
+    };
+    const onVisibilityChange = () => {
+      if (document.hidden) lockVault();
+    };
+    resetTimer();
+    window.addEventListener('pointerdown', resetTimer);
+    window.addEventListener('keydown', resetTimer);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener('pointerdown', resetTimer);
+      window.removeEventListener('keydown', resetTimer);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, [isVaultUnlocked, vaultPin, preferences.autoLockVaultMinutes, lockVault]);
+
+  useEffect(() => {
+    if (activeTab !== 'vault' && isVaultUnlocked) lockVault();
+  }, [activeTab, isVaultUnlocked, lockVault]);
 
   const handleSessionChange = (newSession: UserSession) => {
     setSession(newSession);
@@ -89,6 +121,7 @@ export const App: React.FC = () => {
     await signOutUser();
     const guestSession = getStoredSession();
     setSession(guestSession);
+    lockVault();
   };
 
   const handleUpdatePreferences = (newPrefs: UserPreferences) => {
@@ -186,20 +219,32 @@ export const App: React.FC = () => {
   };
 
   // Vault Actions
-  const handleUnlockVault = (pin: string) => {
-    const valid = verifyVaultPin(pin);
-    if (valid) setIsVaultUnlocked(true);
+  const handleUnlockVault = async (pin: string) => {
+    const valid = await verifyVaultPin(pin);
+    if (valid) {
+      try {
+        const items = await getSavedVaultItems(pin);
+        setVaultItems(items);
+        setVaultPinState(pin);
+        setIsVaultUnlocked(true);
+      } catch (error) {
+        console.error('Unable to unlock vault:', error);
+        return false;
+      }
+    }
     return valid;
   };
 
-  const handleSaveVaultItem = (item: VaultItem) => {
-    saveVaultItem(item);
-    setVaultItems(getSavedVaultItems());
+  const handleSaveVaultItem = async (item: VaultItem) => {
+    if (!vaultPin) return;
+    await saveVaultItem(item, vaultPin);
+    setVaultItems(await getSavedVaultItems(vaultPin));
   };
 
-  const handleDeleteVaultItem = (id: string) => {
-    deleteVaultItem(id);
-    setVaultItems(getSavedVaultItems());
+  const handleDeleteVaultItem = async (id: string) => {
+    if (!vaultPin) return;
+    await deleteVaultItem(id, vaultPin);
+    setVaultItems(await getSavedVaultItems(vaultPin));
   };
 
   // Navigation handlers from components
@@ -349,8 +394,11 @@ export const App: React.FC = () => {
               onDeleteItem={handleDeleteVaultItem}
               isUnlocked={isVaultUnlocked}
               onUnlock={handleUnlockVault}
-              onLock={() => setIsVaultUnlocked(false)}
-              onSetPin={setVaultPin}
+              onLock={lockVault}
+              onSetPin={async (pin) => {
+                await setVaultPin(pin);
+                setVaultPinState(pin);
+              }}
               hasPin={Boolean(getVaultPin())}
             />
           )}

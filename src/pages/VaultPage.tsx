@@ -5,12 +5,12 @@ import { VaultItem } from '../types';
 
 interface VaultPageProps {
   items: VaultItem[];
-  onSaveItem: (item: VaultItem) => void;
-  onDeleteItem: (id: string) => void;
+  onSaveItem: (item: VaultItem) => Promise<void>;
+  onDeleteItem: (id: string) => Promise<void>;
   isUnlocked: boolean;
-  onUnlock: (pin: string) => boolean;
+  onUnlock: (pin: string) => Promise<boolean>;
   onLock: () => void;
-  onSetPin: (pin: string) => void;
+  onSetPin: (pin: string) => Promise<void>;
   hasPin: boolean;
 }
 
@@ -32,9 +32,9 @@ export const VaultPage: React.FC<VaultPageProps> = ({
   const [category, setCategory] = useState<'NOTE' | 'FINDING' | 'SUMMARY'>('NOTE');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleUnlockSubmit = (e: React.FormEvent) => {
+  const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = onUnlock(pinInput);
+    const success = await onUnlock(pinInput);
     if (success) {
       setPinError('');
       setPinInput('');
@@ -43,19 +43,19 @@ export const VaultPage: React.FC<VaultPageProps> = ({
     }
   };
 
-  const handleSetupPin = (e: React.FormEvent) => {
+  const handleSetupPin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (pinInput.length < 4) {
       setPinError('PIN must be at least 4 digits.');
       return;
     }
-    onSetPin(pinInput);
-    onUnlock(pinInput);
+    await onSetPin(pinInput);
+    await onUnlock(pinInput);
     setPinInput('');
     setPinError('');
   };
 
-  const handleCreateSubmit = (e: React.FormEvent) => {
+  const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
@@ -69,7 +69,7 @@ export const VaultPage: React.FC<VaultPageProps> = ({
       updatedAt: new Date().toISOString(),
     };
 
-    onSaveItem(newItem);
+    await onSaveItem(newItem);
     setShowAddModal(false);
     setTitle('');
     setContent('');
@@ -288,4 +288,3 @@ export const VaultPage: React.FC<VaultPageProps> = ({
     </div>
   );
 };
-

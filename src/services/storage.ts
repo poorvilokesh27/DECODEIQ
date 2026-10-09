@@ -1,6 +1,7 @@
 import { AnalysisResult, ReminderItem, VaultItem, UserPreferences, PosterAnalysis, TaskItem } from '../types';
 import { analyzeConversation } from './analyzer';
 import { supabase, isSupabaseConfigured } from './supabase';
+import { decryptVaultContent, encryptVaultContent, hashPin, verifyPinHash } from './vaultCrypto';
 
 const KEYS = {
   ANALYSES: 'missed_analyses_v1',
@@ -153,42 +154,28 @@ export function deleteReminder(id: string): void {
 }
 
 // Vault Store
-export function getSavedVaultItems(): VaultItem[] {
+export async function getSavedVaultItems(pin: string): Promise<VaultItem[]> {
   const saved = localStorage.getItem(KEYS.VAULT);
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch (e) {
-      console.error('Failed to load vault items:', e);
-    }
-  }
-  return [
-    {
-      id: 'vault-sample-1',
-      title: 'Confidential Keynote Presentation Notes',
-      category: 'NOTE',
-      content: 'Main Stage Auditorium confirmed for Friday at 3:00 PM. Demo video to be finalized by 9:00 AM tomorrow.',
-      isEncrypted: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-  ];
+  if (!saved) return [];
+  const items = JSON.parse(await decryptVaultContent(saved, pin));
+  if (!Array.isArray(items)) throw new Error('Vault data is corrupted.');
+  return items;
 }
 
-export function saveVaultItem(item: VaultItem): void {
-  const list = getSavedVaultItems();
+export async function saveVaultItem(item: VaultItem, pin: string): Promise<void> {
+  const list = await getSavedVaultItems(pin);
   const idx = list.findIndex(v => v.id === item.id);
   if (idx >= 0) {
     list[idx] = item;
   } else {
     list.unshift(item);
   }
-  localStorage.setItem(KEYS.VAULT, JSON.stringify(list));
+  localStorage.setItem(KEYS.VAULT, await encryptVaultContent(JSON.stringify(list), pin));
 }
 
-export function deleteVaultItem(id: string): void {
-  const list = getSavedVaultItems().filter(v => v.id !== id);
-  localStorage.setItem(KEYS.VAULT, JSON.stringify(list));
+export async function deleteVaultItem(id: string, pin: string): Promise<void> {
+  const list = (await getSavedVaultItems(pin)).filter(v => v.id !== id);
+  localStorage.setItem(KEYS.VAULT, await encryptVaultContent(JSON.stringify(list), pin));
 }
 
 // Vault Security PIN
@@ -196,15 +183,19 @@ export function getVaultPin(): string | null {
   return localStorage.getItem(KEYS.VAULT_PIN);
 }
 
-export function setVaultPin(pin: string): void {
-  // Store simple hash/value
-  localStorage.setItem(KEYS.VAULT_PIN, btoa(pin));
+export async function setVaultPin(pin: string): Promise<void> {
+  localStorage.setItem(KEYS.VAULT_PIN, await hashPin(pin));
 }
 
-export function verifyVaultPin(pin: string): boolean {
+export async function verifyVaultPin(pin: string): Promise<boolean> {
   const stored = getVaultPin();
   if (!stored) return true; // Unset means unlocked or setup needed
-  return stored === btoa(pin);
+  try {
+    return await verifyPinHash(pin, stored);
+  } catch (error) {
+    console.error('Vault PIN verification failed:', error);
+    return false;
+  }
 }
 
 // Poster Analyses Store
@@ -225,4 +216,3 @@ export function savePosterAnalysis(poster: PosterAnalysis): void {
   list.unshift(poster);
   localStorage.setItem(KEYS.POSTERS, JSON.stringify(list));
 }
-
