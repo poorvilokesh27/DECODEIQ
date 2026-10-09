@@ -1,3 +1,4 @@
+HEAD
 # MISSED. — Your Conversations, Decoded.
 
 > **Tagline:** *"Don't read everything. Understand what matters."*  
@@ -113,3 +114,7 @@ Judges can click the **"Load Sample Thread"** button anywhere in the application
 - **Backend & Database:** Supabase JS v2, PostgreSQL with RLS, Supabase Edge Functions
 - **Local Engine:** Pure TypeScript parser and deterministic keyword analysis service (`analyzer.ts`, `parser.ts`, `posterAnalyzer.ts`)
 
+
+# DECODEIQ
+DecodeIQ is an AI-powered personal intelligence micro-app that helps people understand important information hidden inside long conversations, unread messages, posters, notices, and images.
+690501902d5cc09b0b6a8eeb4751517be28b344c
