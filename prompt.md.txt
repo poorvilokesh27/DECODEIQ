@@ -1,0 +1,1641 @@
+PROJECT NAME: DECODEIQ.
+
+PROJECT TYPE:
+AI-powered conversation intelligence micro-app.
+
+CHALLENGE:
+"The Unread Problem — What Did I Miss?"
+
+TAGLINE:
+"Don't read everything. Understand what matters."
+
+==================================================
+1. ROLE AND RESPONSIBILITY
+==================================================
+
+Act as a senior full-stack developer, AI engineer, UI/UX
+designer, and hackathon mentor.
+
+Build a complete, functional, visually impressive,
+privacy-first conversation intelligence web application
+called MISSED.
+
+Do not create only a static UI or landing page.
+
+Implement the frontend, backend, database integration,
+conversation analysis, history, reminders, private vault,
+image upload, and chatbot.
+
+Work directly inside the currently opened project folder.
+
+First inspect the existing project structure and preserve
+any working code that can be reused.
+
+If the folder is empty, initialize the project.
+
+Do not delete or unnecessarily rewrite existing working
+features.
+
+Do not stop after creating a plan or sample components.
+
+Implement the working application in stages and verify
+that it runs.
+
+If an advanced feature threatens the 4-hour deadline,
+implement a smaller, functional version instead of leaving
+the feature incomplete.
+
+Do not ask unnecessary questions. Choose sensible defaults.
+
+==================================================
+2. TECHNOLOGY STACK
+==================================================
+
+FRONTEND:
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Lucide React icons
+- Recharts only if charts are useful
+
+BACKEND:
+- Supabase for authentication, database, and secure storage
+- Supabase Edge Functions for server-side AI requests
+- PostgreSQL database
+- Supabase Row Level Security
+
+LOCAL-FIRST ANALYSIS:
+- Use browser JavaScript and local processing rules for
+  basic deadline detection, task extraction, and message
+  prioritization.
+- Do not transmit conversations to a cloud service unless
+  the user explicitly chooses a cloud AI feature.
+- Display the processing mode clearly.
+- Do not falsely claim that cloud-processed information
+  never leaves the device.
+
+AI:
+- Make the AI provider configurable.
+- Store any provider API key only in server-side secrets.
+- Never expose secret keys in frontend code.
+- If AI is unavailable, provide a working local analysis
+  engine with transparent limitations.
+- Do not make the entire app dependent on one AI API.
+
+Do not introduce Docker, a complicated microservice
+architecture, or unnecessary libraries.
+
+==================================================
+3. DESIGN AND VISUAL IDENTITY
+==================================================
+
+Create a premium, futuristic, animated productivity
+application.
+
+The interface must feel like a combination of:
+- A modern AI assistant
+- A private digital workspace
+- A conversation intelligence dashboard
+- A creative layered motion-design website
+
+VISUAL STYLE:
+
+Use a midnight-purple and deep-indigo foundation,
+soft lavender gradients, electric cyan highlights,
+and restrained coral accents for urgent alerts.
+
+Include:
+- Layered translucent panels
+- Glassmorphism cards
+- Subtle gradient borders
+- Floating decorative particles
+- Soft background glows
+- Depth and layered shadows
+- Animated transitions between screens
+- Smooth scrolling
+- Interactive hover effects
+- Animated dashboard counters
+- Expandable message cards
+- A visually distinctive priority timeline
+- Subtle background parallax
+- Motion-based loading states
+
+Use Framer Motion for purposeful animations.
+
+Do not animate every element continuously.
+Keep animations smooth and lightweight.
+
+Provide a reduced-motion option and respect the
+user's system reduced-motion preference.
+
+The application must work on desktop, tablet,
+and mobile screens.
+
+Create a custom theme system with these options:
+
+1. Midnight Aurora
+   Deep purple, indigo, and cyan.
+
+2. Lavender Dream
+   Light lavender, white, and soft violet.
+
+3. Ocean Glass
+   Blue, teal, and translucent panels.
+
+4. Forest Focus
+   Dark green, mint, and emerald.
+
+5. Sunset Glow
+   Coral, peach, and warm purple.
+
+6. Minimal Mono
+   Clean monochrome with restrained accent colors.
+
+Allow users to switch themes using a working theme
+selector.
+
+Persist the selected theme locally.
+
+Provide accessible contrast and readable typography.
+
+Use CSS gradients and lightweight CSS effects instead
+of requiring large decorative image files.
+
+==================================================
+4. LANDING AND MAIN DASHBOARD
+==================================================
+
+Build an attractive application shell with a left
+sidebar on desktop and a mobile navigation menu.
+
+Sidebar navigation:
+
+- Overview
+- Analyze Conversation
+- Important Highlights
+- My Action Items
+- Reminders
+- Message History
+- Private Vault
+- Ask AI
+- Appearance
+- Settings
+
+Include a compact logo reading:
+
+MISSED.
+
+Subtitle:
+
+Your conversations, decoded.
+
+Dashboard greeting:
+
+"Welcome back. Let's catch you up."
+
+Provide a prominent action:
+
+"Analyze a Conversation"
+
+Dashboard summary cards:
+
+- Critical Updates
+- Pending Actions
+- Deadline Changes
+- Unanswered Questions
+
+Show actual counts from saved analyses when available.
+Do not hardcode counts that pretend to represent
+real user data.
+
+Provide a recent analyses section with:
+- Conversation title
+- Analysis date
+- Number of findings
+- Number of pending actions
+- Open analysis button
+
+Add a helpful empty state for first-time users.
+
+Provide a sample conversation button so judges can
+test the application immediately.
+
+==================================================
+5. CONVERSATION INPUT AND ANALYSIS
+==================================================
+
+Create an Analyze Conversation screen.
+
+Provide:
+- A large text area for pasted messages
+- Conversation title
+- Optional user display name
+- Optional message timestamps
+- Analyze button
+- Clear button
+- Load sample conversation button
+- Upload conversation text file option
+
+Accept plain text and TXT files initially.
+
+If feasible, support CSV files with a clearly defined
+message format.
+
+Do not claim to support direct WhatsApp or social
+media integration unless it has actually been implemented.
+
+When the user clicks Analyze:
+
+1. Validate the input.
+2. Parse the messages.
+3. Identify individual messages and speakers where possible.
+4. Extract dates and times.
+5. Identify potential tasks, decisions, and questions.
+6. Identify changes between related messages.
+7. Calculate priority scores.
+8. Generate a concise summary.
+9. Preserve evidence for each finding.
+10. Display the results.
+
+Implement a functional local analysis engine first.
+
+Create reusable functions such as:
+
+parseConversation()
+extractDeadlines()
+detectTasks()
+detectQuestions()
+detectMentions()
+detectDecisionChanges()
+calculatePriority()
+generateSummary()
+
+Keep the analysis code separate from React components.
+
+Handle incomplete or ambiguous input gracefully.
+
+Do not invent facts that do not appear in the conversation.
+
+If a result is uncertain, label it as a possible finding.
+
+==================================================
+6. IMPORTANT HIGHLIGHTS ENGINE
+==================================================
+
+This is the core feature of MISSED.
+
+Create a visually impressive results dashboard.
+
+Categorize findings as:
+
+CRITICAL:
+An urgent deadline, major change, or high-priority
+action supported by the conversation.
+
+ACTION REQUIRED:
+A task or commitment assigned to the user.
+
+DECISION CHANGED:
+An earlier decision appears to have changed.
+
+UNANSWERED QUESTION:
+A question that may still require a response.
+
+IMPORTANT INFORMATION:
+Announcements and relevant updates.
+
+POTENTIAL RISK:
+A possible consequence of missing a message.
+
+For each finding, show:
+
+- Short title
+- Explanation
+- Priority
+- Relevant person
+- Deadline if available
+- Confidence or uncertainty indicator
+- Original supporting message
+- Timestamp if available
+- Suggested next step
+- Mark as resolved option where appropriate
+
+Make original evidence expandable.
+
+When users click "View Source", take them to the
+supporting message in the displayed conversation.
+
+Distinguish between:
+- Confirmed facts
+- Inferred conclusions
+- Suggested actions
+
+Never state an inferred consequence as a confirmed fact.
+
+==================================================
+7. DECISION CHANGE DETECTOR
+==================================================
+
+Identify potentially outdated information.
+
+Examples:
+
+"The meeting is on Monday."
+
+Later:
+
+"The meeting has moved to Tuesday."
+
+Display:
+
+PREVIOUS:
+Meeting on Monday.
+
+LATEST:
+Meeting on Tuesday.
+
+CHANGE:
+Schedule updated.
+
+Include both source messages when available.
+
+Support:
+- Deadline changes
+- Meeting changes
+- Project decision changes
+- Version changes
+- Assignment changes
+
+Use deterministic rules for straightforward comparisons.
+
+If contextual AI is unavailable, explain the limitation.
+
+Do not assume every later message overrides every earlier
+message. Require a relevant relationship between messages.
+
+==================================================
+8. PERSONAL OBLIGATION FINDER
+==================================================
+
+Identify tasks and commitments.
+
+Examples:
+- "Please submit the report."
+- "Can you finish the presentation tonight?"
+- "Please confirm attendance."
+- "I will send the final file."
+
+Determine whether the message appears to refer to the user.
+
+Allow the user to enter their name before analysis.
+
+Show:
+- Task
+- Assigned person
+- Deadline
+- Priority
+- Source message
+- Completion checkbox
+
+Distinguish between a task assigned to the user,
+a task assigned to another person, and a commitment
+whose owner is unclear.
+
+Allow the user to mark a task as completed.
+
+Persist task status when saved to the backend.
+
+==================================================
+9. CONSEQUENCE DETECTOR
+==================================================
+
+Create a section called:
+
+"What happens if I miss this?"
+
+Connect related findings.
+
+Example:
+
+Deadline changed
+       |
+Submission task pending
+       |
+Latest document needs verification
+
+Display potential risks and recommended actions.
+
+Every inferred risk must be labeled as a possibility.
+
+Provide the messages that support the conclusion.
+
+Use a simple connected-card interface rather than
+a complicated graph dependency.
+
+==================================================
+10. REMINDER SYSTEM
+==================================================
+
+Create a functional reminders section.
+
+Users should be able to create reminders from:
+
+- Detected deadlines
+- Detected tasks
+- Important decisions
+- Manually entered reminders
+
+Reminder fields:
+
+- Title
+- Description
+- Date
+- Time
+- Priority
+- Related conversation
+- Related task
+- Status
+
+Provide:
+- Add reminder
+- Edit reminder
+- Delete reminder
+- Mark completed
+- Upcoming reminders list
+- Overdue reminder indicator
+- Browser notification permission request
+- Snooze option
+
+Request browser notification permission only after
+a clear user action.
+
+Use browser notifications where supported and permitted.
+
+Clearly explain that browser notifications may require
+the application to remain open or be installed, depending
+on the browser and platform.
+
+Do not claim reliable background notifications unless
+they are implemented and tested.
+
+Store reminders locally for the quick MVP, and persist
+them to Supabase when the user is authenticated and
+backend configuration is available.
+
+If the backend is unavailable, the app must still allow
+local reminders.
+
+==================================================
+11. MESSAGE HISTORY
+==================================================
+
+Create a Message History page.
+
+Save each completed analysis with:
+
+- Conversation title
+- Analysis date and time
+- Short summary
+- Number of important findings
+- Number of detected tasks
+- Number of detected deadlines
+- Number of unanswered questions
+
+Provide:
+- Search history
+- Filter by date
+- Filter by priority
+- Sort by most recent
+- Open previous analysis
+- Rename analysis
+- Delete analysis
+- Clear all history with confirmation
+
+Store the original conversation only when the user
+chooses to save it.
+
+Allow users to save only the summary and findings
+without keeping the original conversation.
+
+Support local history immediately.
+
+Support authenticated Supabase history when configured.
+
+Never expose one user's history to another user.
+
+==================================================
+12. PRIVATE VAULT
+==================================================
+
+Create a private folder named:
+
+MY PRIVATE VAULT
+
+Purpose:
+Store sensitive notes, important findings, and selected
+conversation summaries separately from general history.
+
+Features:
+
+- Create private notes
+- Save important findings
+- Save selected summaries
+- Search vault items
+- Edit notes
+- Delete notes
+- Lock and unlock the vault
+- Auto-lock after inactivity
+- Clear vault contents
+
+Implement a vault PIN or passphrase flow.
+
+For the first version, use a secure design:
+
+- Do not store the PIN in plaintext.
+- Do not treat a frontend-only PIN check as sufficient
+  security for cloud-stored private files.
+- Use authenticated access and Row Level Security.
+- Use an appropriate password-derived encryption key
+  and authenticated encryption for vault content if
+  implementing client-side encrypted storage.
+- Never store encryption keys directly alongside
+  encrypted data in a way that defeats the protection.
+- Explain that forgotten local encryption credentials
+  may make encrypted content unrecoverable.
+
+For a four-hour MVP, prioritize an honest local vault
+with encrypted notes if feasible, or clearly label a
+simpler lock screen as a prototype rather than claiming
+that it provides strong encryption.
+
+Do not store the vault PIN in localStorage.
+
+Do not upload private vault content to an AI service
+without explicit user consent.
+
+==================================================
+13. IMAGE UPLOAD AND MESSAGE EXPLANATION
+==================================================
+
+Add an image upload option to the analysis workflow.
+
+Allow users to select an image or screenshot of a
+conversation, announcement, schedule, or deadline.
+
+Requirements:
+
+- File picker
+- Image preview
+- Remove image option
+- File type validation
+- File size validation
+- Clear error messages
+
+If an OCR engine is available locally, use it to extract
+text from the image.
+
+If OCR is not implemented, do not pretend the image
+has been analyzed.
+
+Instead, offer a working fallback:
+- Preview the image.
+- Let the user manually enter or correct the text.
+- Analyze the resulting text using the local engine.
+
+An optional vision AI integration may be added later.
+Cloud image analysis must require user consent and must
+clearly disclose that the image will leave the device.
+
+Do not store uploaded images permanently unless the
+user explicitly chooses to save them.
+
+==================================================
+14. AI CHATBOT — ASK MISSED
+==================================================
+
+Create a chatbot page called:
+
+ASK MISSED
+
+Subtitle:
+
+"Confused about a message? Let's figure it out."
+
+The chatbot should help the user understand a specific
+message or finding.
+
+Examples:
+
+"What does this message mean?"
+
+"Why is this deadline marked critical?"
+
+"What do I need to do next?"
+
+"Explain the decision change simply."
+
+"Who is responsible for this task?"
+
+"Summarize this conversation in three points."
+
+Provide quick prompt buttons.
+
+When a user opens the chatbot from a finding, pass the
+relevant message and its supporting context.
+
+The chatbot should answer using the available evidence.
+
+It should:
+- Explain confusing language in simple terms.
+- Separate explicit facts from assumptions.
+- Identify missing context.
+- Avoid inventing details.
+- Ask the user to clarify when necessary.
+- Suggest possible next steps.
+
+Implement a basic local explanation mode for the MVP.
+
+Provide an optional server-side AI mode using a
+configurable provider.
+
+Never put API secrets in React or Vite environment
+variables prefixed with VITE_.
+
+Never send the complete conversation to a cloud AI
+provider without clear consent.
+
+Do not claim the chatbot has analyzed content that
+was never supplied to it.
+
+==================================================
+15. BACKEND AND DATABASE
+==================================================
+
+Create a practical Supabase backend.
+
+Provide SQL migrations or a setup.sql file for:
+
+profiles
+conversations
+analyses
+findings
+tasks
+reminders
+vault_items
+
+Suggested relationships:
+
+profiles:
+- id
+- display_name
+- created_at
+
+conversations:
+- id
+- user_id
+- title
+- created_at
+- updated_at
+
+analyses:
+- id
+- conversation_id
+- summary
+- processing_mode
+- created_at
+
+findings:
+- id
+- analysis_id
+- category
+- title
+- description
+- priority
+- confidence
+- source_message
+- source_timestamp
+- status
+- created_at
+
+tasks:
+- id
+- user_id
+- analysis_id
+- title
+- assigned_to
+- deadline
+- priority
+- completed
+- created_at
+
+reminders:
+- id
+- user_id
+- task_id
+- title
+- remind_at
+- status
+- created_at
+
+vault_items:
+- id
+- user_id
+- title
+- encrypted_content
+- created_at
+- updated_at
+
+Adapt the schema if a better design is required.
+
+Add appropriate foreign keys, indexes, constraints,
+and timestamps.
+
+Enable Row Level Security on all user-owned tables.
+
+Create policies so authenticated users can access
+only their own records.
+
+Never use a service-role key in the frontend.
+
+Use Supabase Edge Functions for privileged server-side
+operations.
+
+Validate all incoming requests.
+
+Do not log conversation text or private vault contents.
+
+Provide a .env.example containing placeholder values only.
+
+Required environment variables:
+
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+
+Keep AI provider secrets in server-side secrets,
+not in frontend environment variables.
+
+If Supabase credentials are unavailable, run the app
+in local-only demo mode without crashing.
+
+Clearly indicate which mode is active.
+
+==================================================
+16. AUTHENTICATION
+==================================================
+
+Implement simple email authentication through Supabase
+if backend credentials are available.
+
+Provide:
+- Sign up
+- Sign in
+- Sign out
+- Session persistence
+- Password reset where supported
+
+Allow the application to run in local demo mode without
+requiring account creation.
+
+Do not create fake authentication.
+
+Do not allow users to access other users' saved data.
+
+==================================================
+17. SECURITY AND PRIVACY
+==================================================
+
+Privacy is a central part of the challenge.
+
+Implement:
+
+- Local conversation analysis by default
+- Clear processing-mode indicator
+- Optional consent before cloud AI requests
+- Secure authentication when enabled
+- Row Level Security
+- Server-side API secrets
+- Input validation
+- File upload validation
+- Safe rendering of user-provided text
+- No unnecessary conversation logging
+- Clear conversation and history options
+- Secure vault design
+- Privacy explanations
+
+Do not use eval() to process user content.
+
+Do not render untrusted HTML directly.
+
+Do not claim end-to-end encryption unless it is genuinely
+implemented and correctly designed.
+
+Do not claim that deleting a local copy deletes every
+backup or server copy unless that behavior is verified.
+
+==================================================
+18. SETTINGS AND PERSONALIZATION
+==================================================
+
+Build a functional settings screen.
+
+Include:
+
+- Theme selection
+- Light/dark appearance where supported
+- Reduced-motion setting
+- User display name
+- Reminder preferences
+- Default processing mode
+- History retention preference
+- Clear local data
+- Sign out
+
+Persist preferences appropriately.
+
+Do not provide settings that appear functional but
+do not actually affect the application.
+
+==================================================
+19. PERFORMANCE AND USER EXPERIENCE
+==================================================
+
+The application must:
+
+- Start quickly
+- Work on a normal laptop
+- Avoid unnecessarily large dependencies
+- Handle empty inputs
+- Handle malformed files
+- Show loading indicators
+- Display useful error messages
+- Avoid losing user input unexpectedly
+- Provide empty states
+- Be keyboard accessible
+- Support responsive layouts
+- Avoid horizontal overflow
+- Respect reduced-motion preferences
+
+Use realistic sample data for the demo.
+
+Never hardcode analysis results as though they were
+generated from arbitrary user input.
+
+==================================================
+20. REQUIRED PROJECT STRUCTURE
+==================================================
+
+Use a clean and maintainable structure similar to:
+
+src/
+  components/
+    layout/
+    dashboard/
+    conversation/
+    findings/
+    reminders/
+    vault/
+    chatbot/
+    settings/
+
+  pages/
+    DashboardPage.tsx
+    AnalyzePage.tsx
+    HighlightsPage.tsx
+    TasksPage.tsx
+    RemindersPage.tsx
+    HistoryPage.tsx
+    VaultPage.tsx
+    ChatPage.tsx
+    SettingsPage.tsx
+
+  services/
+    analyzer.ts
+    parser.ts
+    storage.ts
+    reminders.ts
+    supabase.ts
+    chatbot.ts
+
+  hooks/
+  types/
+  utils/
+  styles/
+
+supabase/
+  migrations/
+  functions/
+
+public/
+
+.env.example
+README.md
+package.json
+
+Adapt the structure when appropriate.
+
+Avoid creating unnecessary files or abstractions.
+
+==================================================
+21. FOUR-HOUR IMPLEMENTATION PRIORITIES
+==================================================
+
+PRIORITY 1 — MUST WORK:
+- React application starts
+- Responsive animated dashboard
+- Paste conversation
+- Load sample conversation
+- Analyze messages locally
+- Generate summary
+- Detect deadlines and tasks
+- Identify important highlights
+- Show source messages
+- Save analysis history locally
+- Change background theme
+- Create local reminders
+- Basic message explanation chatbot
+
+PRIORITY 2 — IMPLEMENT IF TIME PERMITS:
+- Supabase authentication
+- Cloud database persistence
+- User-specific saved analyses
+- Private vault with appropriate protection
+- Image preview and OCR
+- Browser notifications
+
+PRIORITY 3 — ADVANCED:
+- Optional cloud AI
+- Strong client-side vault encryption
+- More advanced contextual decision detection
+- Reliable background notifications
+
+Do not leave Priority 1 incomplete while building
+an advanced Priority 3 feature.
+
+If the backend is not configured, keep the local
+features operational and display a clear demo-mode
+indicator.
+
+==================================================
+22. TESTING AND COMPLETION
+==================================================
+
+Before declaring the project complete:
+
+1. Install dependencies.
+2. Run the development server.
+3. Fix compilation errors.
+4. Test conversation analysis.
+5. Test empty input.
+6. Test deadline detection.
+7. Test task detection.
+8. Test source-message navigation.
+9. Test history saving and deletion.
+10. Test theme switching.
+11. Test reminder creation and completion.
+12. Test chatbot explanations.
+13. Test responsive layouts.
+14. Check for console errors.
+15. Check privacy-related claims against actual behavior.
+
+If Supabase is configured, test database access and
+user isolation.
+
+If Supabase is not configured, test local demo mode.
+
+Do not say a feature works unless it has been implemented.
+
+==================================================
+23. FINAL DELIVERABLES
+==================================================
+
+Deliver:
+
+1. Complete frontend code.
+2. Working local analysis engine.
+3. Backend integration.
+4. Database SQL migration.
+5. Supabase Row Level Security policies.
+6. Optional Edge Function for AI requests.
+7. .env.example.
+8. README with setup instructions.
+9. Instructions for starting the app.
+10. A sample conversation for demonstration.
+11. A list of implemented features.
+12. A list of features requiring external credentials.
+13. A clear explanation of demo mode versus backend mode.
+
+Start by inspecting the current directory.
+
+Then build the application in priority order.
+
+Do not stop after planning.
+Implement the working application now.
+
+
+
+Build the complete MISSED. frontend using React, Vite,
+TypeScript, Tailwind CSS, Framer Motion, and Lucide React.
+
+Create a premium animated, layered interface with:
+- Sidebar navigation
+- Dashboard
+- Conversation analysis page
+- Important highlights
+- Decision change timeline
+- Personal action items
+- Reminders
+- Message history
+- Private vault
+- Ask MISSED chatbot
+- Settings and theme selector
+
+Use a midnight-purple and lavender visual theme with
+glassmorphism, floating gradients, subtle parallax,
+layered cards, smooth transitions, and interactive
+hover effects.
+
+Add five additional themes and make theme switching work.
+
+Make every page responsive.
+
+Implement a working conversation input and sample
+conversation.
+
+Use realistic data only for the sample demonstration.
+
+Build reusable components and a clean folder structure.
+
+Do not create a static mockup. Implement navigation,
+forms, buttons, state management, loading states,
+and empty states.
+
+Do not integrate a cloud AI API yet.
+
+First make the entire frontend functional using local
+state and reusable local service functions.
+
+Run the application and fix all errors before finishing.
+
+
+
+
+
+
+Implement the analysis engine
+
+
+
+Now implement the actual conversation analysis engine
+for MISSED.
+
+Create separate TypeScript services for:
+
+1. Parsing conversations.
+2. Detecting deadlines.
+3. Detecting tasks.
+4. Detecting personal mentions.
+5. Detecting questions.
+6. Identifying possible decision changes.
+7. Calculating urgency and relevance.
+8. Generating summaries.
+9. Preserving original message evidence.
+10. Identifying possible consequences.
+
+Use local processing by default.
+
+Allow users to enter their name.
+
+Distinguish tasks assigned to the user from tasks
+assigned to other people.
+
+Every finding must link to its original source message.
+
+Clearly label uncertain findings.
+
+Do not invent facts or treat every later message
+as automatically replacing an earlier decision.
+
+Connect the analysis engine to the existing React UI.
+
+Remove any hardcoded results that pretend to represent
+the analysis of arbitrary user input.
+
+Add tests or sample cases for deadlines, task assignments,
+questions, changed decisions, and empty conversations.
+
+Run the application and fix errors.
+
+
+
+
+Implement the Supabase backend for the existing
+MISSED. application.
+
+Do not rebuild the frontend.
+
+Create SQL migrations for profiles, conversations,
+analyses, findings, tasks, reminders, and vault items.
+
+Add foreign keys, indexes, timestamps, and appropriate
+Row Level Security policies.
+
+Implement authentication, session persistence,
+user-specific database access, and saved analysis history.
+
+Create services for:
+- Saving analyses
+- Loading previous analyses
+- Updating tasks
+- Creating and updating reminders
+- Deleting records
+- Saving private vault records
+
+Use Supabase Edge Functions for optional cloud AI.
+
+Keep provider secrets on the server.
+
+Never expose a service-role key in frontend code.
+
+Make Supabase configuration optional so that the
+application still works in local demo mode.
+
+Clearly display whether the application is using
+local-only mode or the authenticated backend.
+
+Preserve the existing design and working features.
+
+Add setup instructions to README.md.
+
+Run checks and fix errors.
+
+
+
+
+Implement the Private Vault and Reminders features
+inside the existing MISSED. application.
+
+REMINDERS:
+- Create, edit, delete, and complete reminders.
+- Support dates, times, priorities, and descriptions.
+- Create reminders from detected tasks and deadlines.
+- Add upcoming and overdue views.
+- Implement browser notifications where supported.
+- Add a snooze option.
+- Persist reminders locally and to Supabase when
+  the authenticated backend is available.
+- Explain notification limitations honestly.
+
+PRIVATE VAULT:
+- Create private notes.
+- Save important findings and summaries.
+- Search, edit, and delete vault items.
+- Add lock and unlock controls.
+- Add automatic locking after inactivity.
+- Do not store PINs in plaintext.
+- Protect cloud records with authentication and
+  Row Level Security.
+- Use appropriate authenticated encryption if
+  encrypted local vault content is implemented.
+- Do not falsely advertise a basic lock screen as
+  strong encryption.
+- Keep private content out of cloud AI requests
+  unless the user explicitly consents.
+
+Make every button functional.
+
+Preserve the existing UI, theme system, and
+conversation analysis features.
+
+Test the features and fix errors.
+
+
+
+Implement image upload and the Ask MISSED chatbot.
+
+IMAGE UPLOAD:
+- Allow PNG, JPEG, and WebP images.
+- Show a preview before processing.
+- Validate file types and file sizes.
+- Allow removing the selected image.
+- Provide an OCR option if a suitable OCR engine
+  is available locally.
+- If OCR is unavailable, allow users to manually
+  enter the image's text and analyze it.
+- Do not claim to understand an image that has
+  not actually been processed.
+- Do not upload images to cloud AI without consent.
+
+ASK MISSED CHATBOT:
+- Explain confusing messages.
+- Explain why a finding is marked important.
+- Summarize a conversation in simple language.
+- Explain deadline changes.
+- Identify tasks and responsible people.
+- Suggest possible next steps.
+- Distinguish facts from assumptions.
+- Preserve the source-message context.
+- Include quick question buttons.
+- Provide a working local explanation fallback.
+- Support an optional secure server-side AI provider.
+
+Connect the chatbot to the selected finding so that
+users can ask questions about that particular message.
+
+Do not expose AI API keys in frontend code.
+
+Keep the existing UI and features working.
+
+Test and fix errors.
+
+
+Implement a complete new feature called "SNAP & UNDERSTAND"
+inside my existing MISSED. AI conversation intelligence app.
+
+IMPORTANT:
+Do not rebuild the application from scratch.
+Do not remove or damage any existing features.
+Integrate this feature into the current design, navigation,
+theme system, backend, and AI chatbot.
+
+The application must remain achievable within the 4-hour
+hackathon deadline, so prioritize a working implementation.
+
+==================================================
+1. FEATURE PURPOSE
+==================================================
+
+Users should be able to upload a photo, take a picture
+using their device camera, or upload a screenshot or poster.
+
+Examples:
+- College event posters
+- Hackathon announcements
+- Internship posters
+- Exam timetables
+- Assignment announcements
+- Meeting notices
+- Important deadline posters
+- Event invitations
+- Competition announcements
+- Public information posters
+- Screenshots containing important information
+
+The app should extract the text, identify the important
+information, and explain the meaning in simple language.
+
+The feature must answer:
+
+1. What is this poster about?
+2. What is the main message?
+3. What important information does it contain?
+4. Is there a deadline?
+5. What date, time, and location are mentioned?
+6. Who is the intended audience?
+7. What action is the user expected to take?
+8. Are registration details or eligibility conditions mentioned?
+9. Is anything important missing or unclear?
+10. What should the user do next?
+
+Do not invent information that is not present in the image.
+
+==================================================
+2. NAVIGATION
+==================================================
+
+Add a new navigation item:
+
+"Snap & Understand"
+
+Use an appropriate camera or image icon.
+
+The page should match the existing MISSED. interface.
+
+Use the existing theme, animated background, glassmorphism,
+layered cards, gradients, and Framer Motion transitions.
+
+Do not create a separate application.
+
+==================================================
+3. IMAGE UPLOAD
+==================================================
+
+Provide a large upload panel with:
+
+- Upload an Image
+- Take a Photo
+- Choose from Gallery
+- Upload Screenshot
+- Drag and Drop
+
+Support PNG, JPG, JPEG, and WebP.
+
+Validate file type and file size.
+
+Show an image preview after selection.
+
+Provide:
+- Remove image
+- Replace image
+- Analyze image
+- Clear all
+
+Display helpful error messages for invalid files.
+
+The user must explicitly start the analysis.
+
+Do not upload images to a server automatically.
+
+==================================================
+4. CAMERA ACCESS
+==================================================
+
+Implement a working "Take a Photo" option.
+
+Use navigator.mediaDevices.getUserMedia with video
+constraints to request camera access.
+
+Show the live camera preview.
+
+Provide:
+- Start camera
+- Capture photo
+- Retake photo
+- Use this photo
+- Cancel camera
+
+Stop all camera media tracks when the camera is closed,
+the user leaves the camera screen, or the component unmounts.
+
+Handle these cases:
+- Camera permission denied
+- Camera unavailable
+- No camera found
+- Unsupported browser
+- Camera initialization failure
+
+Explain that camera access generally requires HTTPS
+or localhost in supported browsers.
+
+Never activate the camera without a user action.
+
+If camera access fails, allow image upload as a fallback.
+
+On mobile, also provide an option to use the device's
+native camera through a file input with capture="environment".
+
+Do not assume every browser supports the same camera behavior.
+
+==================================================
+5. TEXT EXTRACTION FROM IMAGES
+==================================================
+
+Implement OCR so the app can extract readable text
+from uploaded images and captured photographs.
+
+Use a suitable browser-compatible OCR library,
+such as Tesseract.js, if it can be integrated reliably.
+
+Keep OCR processing local where feasible.
+
+Display a processing indicator:
+
+"Reading your image..."
+
+Show OCR progress if supported.
+
+After extraction, display the extracted text in an
+editable text area.
+
+Allow the user to correct spelling, dates, names,
+and other OCR mistakes before analysis.
+
+Do not silently replace the extracted text with invented text.
+
+If OCR fails:
+- Show an error message.
+- Keep the image preview available.
+- Let the user enter the text manually.
+- Allow them to retry.
+
+If the image contains no readable text, explain that
+the app could not extract enough text to analyze it.
+
+Do not claim to support handwriting or every language
+unless the OCR configuration actually supports them.
+
+==================================================
+6. AI POSTER UNDERSTANDING
+==================================================
+
+After OCR extraction, analyze the text and image context.
+
+Use local analysis rules by default.
+
+If an AI vision model is configured, allow the user
+to explicitly choose AI image analysis.
+
+Before cloud image processing, disclose that the image
+will be sent to the configured AI provider.
+
+Never expose API keys in frontend code.
+
+Create a structured result containing:
+
+A. POSTER SUMMARY
+Explain the poster in two or three simple sentences.
+
+B. MAIN PURPOSE
+Identify whether it appears to advertise an event,
+announce a deadline, provide instructions, or communicate
+another purpose.
+
+C. IMPORTANT HIGHLIGHTS
+Extract the most relevant information.
+
+D. DATE AND TIME
+Identify event dates, registration deadlines, examination
+dates, and other time-sensitive information.
+
+E. LOCATION
+Extract the venue or location when available.
+
+F. WHO SHOULD CARE?
+Identify the intended audience when the poster makes it clear.
+
+G. REQUIRED ACTION
+Explain what the reader may need to do next.
+
+H. ELIGIBILITY
+Extract eligibility criteria and requirements if mentioned.
+
+I. CONTACT AND REGISTRATION
+Extract contact details, registration instructions,
+and URLs visible in the text.
+
+J. MISSING OR UNCLEAR DETAILS
+Point out important details that are absent or ambiguous.
+
+K. SIMPLE EXPLANATION
+Explain the poster in easy-to-understand language.
+
+L. NEXT STEPS
+Provide practical suggestions based only on the information
+available.
+
+Clearly distinguish extracted facts from AI interpretation.
+
+Do not invent deadlines, registration links, locations,
+or eligibility conditions.
+
+==================================================
+7. VISUAL RESULTS DASHBOARD
+==================================================
+
+Create an animated results dashboard.
+
+Display:
+
+- Poster preview
+- Poster title or detected heading
+- Main purpose
+- Important highlights
+- Dates and deadlines
+- Location
+- Required actions
+- Registration information
+- Unclear details
+- Simple explanation
+
+Use expandable cards and clear visual hierarchy.
+
+Highlight deadlines in a prominent color.
+
+Allow the user to click an extracted date and create
+a reminder.
+
+Allow the user to save important findings to Message History
+or the Private Vault.
+
+Allow the user to copy the extracted text.
+
+Provide a "Analyze Another Image" button.
+
+Every action must work.
+
+==================================================
+8. ASK MISSED ABOUT THIS IMAGE
+==================================================
+
+Connect the existing chatbot to the analyzed poster.
+
+Add a section:
+
+"Ask MISSED about this poster"
+
+Provide suggested questions:
+
+- What is this poster about?
+- Explain this in simple words.
+- What do I need to do?
+- What is the deadline?
+- Who is eligible?
+- What documents are required?
+- Is there anything important I should notice?
+- What details are missing?
+
+The chatbot must use the extracted text and any supported
+visual analysis as context.
+
+If the answer is not present in the poster, say so clearly.
+
+Do not invent missing information.
+
+Use local explanations by default and optional cloud AI
+only after explicit consent.
+
+==================================================
+9. REMINDERS AND HISTORY INTEGRATION
+==================================================
+
+If a deadline is extracted, display:
+
+"Create Reminder"
+
+Allow the user to review and confirm the date and time.
+
+Do not create reminders silently.
+
+Save the analysis to Message History when requested.
+
+Allow the user to save the poster summary and findings
+to the Private Vault.
+
+Respect existing privacy and retention settings.
+
+Do not retain uploaded images permanently unless
+the user explicitly chooses to save them.
+
+==================================================
+10. PRIVACY AND SECURITY
+==================================================
+
+Keep OCR processing local where feasible.
+
+Display whether the image is being processed locally
+or sent to a cloud AI provider.
+
+Ask for consent before any cloud upload.
+
+Do not upload an image just because the user selects it.
+
+Do not store sensitive images unnecessarily.
+
+Do not log image contents or extracted private text.
+
+Revoke temporary object URLs when no longer needed.
+
+Validate files before processing.
+
+==================================================
+11. IMPLEMENTATION REQUIREMENTS
+==================================================
+
+Use the existing React, TypeScript, Tailwind CSS,
+and Framer Motion setup.
+
+Create reusable components, for example:
+
+ImageUploadPanel
+CameraCapture
+ImagePreview
+OCRProcessor
+ExtractedTextEditor
+PosterAnalysisResults
+PosterDeadlineCard
+PosterChatbot
+
+Keep the code maintainable and consistent with
+the existing project structure.
+
+If Tesseract.js is used, handle loading failures and
+avoid downloading OCR language data until required.
+
+Do not block the entire application while OCR initializes.
+
+Do not add a large vision model that prevents the app
+from starting within the hackathon timeframe.
+
+Implement the upload, camera capture, OCR, manual text
+correction, local analysis, and results display first.
+
+Optional vision AI can be added after the core workflow works.
+
+Test camera cleanup, file validation, OCR errors,
+manual correction, deadline extraction, and reminders.
+
+Preserve every existing MISSED. feature.
+
+Finally, run the application and fix any compilation
+errors and runtime errors.

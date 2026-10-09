@@ -1,0 +1,217 @@
+# DecodeIQ — Project Master Prompt
+
+## 1. Project Overview
+
+Build DecodeIQ, an AI-powered personal intelligence micro-app.
+
+Tagline: "Decode the noise. Discover what matters."
+
+DecodeIQ helps users understand important information hidden in
+long conversations, unread messages, posters, notices, and images.
+
+It should identify important updates, tasks, deadlines, unanswered
+questions, and changes in decisions, then explain what users
+may need to do next.
+
+## 2. Technology Stack
+
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Lucide React
+- Supabase for authentication, database, and storage
+- OCR for extracting text from uploaded images
+- Secure server-side AI integration when needed
+
+## 3. Visual Design
+
+Create a premium, futuristic AI interface.
+
+Colors:
+- Midnight purple: #171329
+- Electric violet: #8B5CF6
+- Lavender: #C4B5FD
+- Cyan: #67E8F9
+- White: #F8FAFC
+
+Use:
+- Animated aurora backgrounds
+- Layered glassmorphism
+- Translucent cards
+- Soft gradients and glowing accents
+- Smooth page transitions
+- Subtle parallax
+- Floating UI elements
+- Animated statistics and charts
+- Responsive layouts for desktop and mobile
+
+Use Framer Motion for purposeful animations.
+
+Respect reduced-motion preferences and avoid animations that
+make the application slow or difficult to use.
+
+## 4. Core Features
+
+### A. Smart Conversation Analysis
+Allow users to paste conversations for analysis.
+
+Identify:
+- Important updates
+- Tasks and action items
+- Deadlines
+- Unanswered questions
+- Important mentions
+- Changes in plans or decisions
+
+Link findings to the original text.
+
+### B. Priority Highlights
+Organize findings by importance.
+
+Explain why each finding matters.
+Never invent information that is not present in the source.
+
+### C. Task and Deadline Detection
+Extract tasks and deadlines from conversations.
+
+Allow users to review and confirm extracted details before
+saving them or creating reminders.
+
+### D. Decision Change Detection
+Identify changes to dates, locations, plans, and decisions.
+
+Show the earlier information and the newer information when
+both are present in the source.
+
+### E. Snap & Understand
+Allow users to upload images and capture photographs using
+their device camera.
+
+Extract text from posters, notices, and other images using OCR.
+
+Display editable extracted text and explain:
+- Main purpose
+- Important dates
+- Time and location
+- Eligibility
+- Registration details
+- Contact information
+- Required next steps
+
+Only display information supported by the extracted text.
+Clearly identify missing or uncertain details.
+
+### F. AI Assistant
+Allow users to ask questions about analyzed conversations,
+images, and extracted information.
+
+Use a real AI integration when configured.
+Provide a clearly identified local fallback when AI is unavailable.
+
+### G. Smart Reminders
+Allow users to save confirmed tasks and deadlines.
+
+Support reminders and notifications where the browser or
+platform permits them.
+
+Explain notification permission requirements to the user.
+
+### H. Analysis History
+Allow users to save, search, filter, and reopen previous analyses.
+
+Do not permanently save private conversations without
+the user's knowledge and consent.
+
+### I. Private Vault
+Allow users to store information they choose to protect.
+
+Implement appropriate access controls and secure storage.
+Never claim that information is encrypted unless genuine
+encryption is implemented.
+
+### J. Theme Settings
+Offer several visual themes, including:
+- Midnight Aurora
+- Lavender Dream
+- Ocean Glass
+- Forest Focus
+- Sunset Glow
+- Minimal Mono
+
+## 5. Backend and Security
+
+Use Supabase where appropriate for:
+- Authentication
+- User profiles
+- Saved analyses
+- Tasks
+- Reminders
+- User-owned history
+- Protected vault records
+
+Apply Row Level Security to user-owned data.
+
+Keep API keys and service-role credentials on the server.
+Never expose secrets in frontend code.
+
+Provide an example environment configuration without real secrets.
+
+## 6. Code Quality
+
+- Use reusable React components.
+- Organize code into understandable feature folders.
+- Keep components maintainable.
+- Implement loading, error, and empty states.
+- Validate user inputs.
+- Handle missing backend credentials gracefully.
+- Include accessible controls and keyboard navigation.
+- Ensure the application works on desktop and mobile.
+- Do not build only a static mockup.
+
+## 7. Implementation Workflow
+
+First inspect the existing project files.
+
+If the project is empty, initialize the required application.
+
+Build the project in stages:
+
+1. Establish the project structure.
+2. Build the visual design system.
+3. Create the landing page and dashboard.
+4. Implement conversation analysis.
+5. Implement Snap & Understand.
+6. Implement tasks and reminders.
+7. Implement history and the private vault.
+8. Integrate the chatbot and backend.
+9. Test all features and fix errors.
+10. Document setup and deployment.
+
+Do not overwrite existing work without inspecting it first.
+
+After each stage, run the relevant checks and fix errors before
+moving to the next stage.
+
+## 8. GitHub Collaboration
+
+The repository is named DecodeIq.
+
+Keep the project organized so multiple developers can collaborate.
+
+Include a README.md containing:
+- Project overview
+- Technology stack
+- Installation instructions
+- Development commands
+- Environment variable setup
+- Feature status
+- Known limitations
+
+Never commit API keys, credentials, node_modules, or real user data.
+
+## Final Goal
+
+Deliver a functional, visually impressive, responsive AI micro-app
+that helps users understand what matters and decide what to do next.
